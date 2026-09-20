@@ -35,6 +35,18 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector("#title").textContent = painting.title;
         document.querySelector("#artist").textContent = painting.artist;
 
-        // (Steps 3-4 go here)
+        // draw one rectangle (a div) for each feature of the painting
+        for (const f of painting.features) {
+            const box = document.createElement("div");
+            box.className = "box";                       // CSS gives it the red border
+            box.style.position = "absolute";
+            box.style.left = f.upperLeft[0] + "px";
+            box.style.top = f.upperLeft[1] + "px";
+            box.style.width = (f.lowerRight[0] - f.upperLeft[0]) + "px";
+            box.style.height = (f.lowerRight[1] - f.upperLeft[1]) + "px";
+            figure.appendChild(box);
+
+            // (Step 4 goes here)
+        }
     });
 });
