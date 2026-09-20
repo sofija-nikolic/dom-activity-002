@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
     // "content" is the JSON text loaded from paintings.js
     const paintings = JSON.parse(content);
+
     const list = document.querySelector("#paintings ul");
     const figure = document.querySelector("figure");
     const description = document.querySelector("#description");
 
-    // Build one thumbnail per painting
+    // build a small thumbnail for every painting
     for (const p of paintings) {
         const li = document.createElement("li");
         const img = document.createElement("img");
@@ -16,16 +17,17 @@ document.addEventListener("DOMContentLoaded", function () {
         list.appendChild(li);
     }
 
-    // event delegation: one click handler on the list handles every thumbnail
+    // event delegation: one click handler on the list covers every thumbnail
     list.addEventListener("click", function (e) {
         if (e.target.nodeName !== "IMG") return;   // ignore clicks that aren't on a thumbnail
 
-        figure.innerHTML = "";            // clear the old image and boxes
+        figure.innerHTML = "";            // remove the old image and boxes
         description.textContent = "";
 
-        // find the painting whose id matches the clicked thumbnail
+        // find the painting that matches the clicked thumbnail
         const painting = paintings.find(p => p.id === e.target.dataset.id);
 
+        // show the large version of the painting
         const big = document.createElement("img");
         big.id = "full";                  // the CSS styles #full
         big.src = "images/large/" + painting.id + ".jpg";
@@ -46,7 +48,15 @@ document.addEventListener("DOMContentLoaded", function () {
             box.style.height = (f.lowerRight[1] - f.upperLeft[1]) + "px";
             figure.appendChild(box);
 
-            // (Step 4 goes here)
+            // show the description while the mouse is over the box
+            box.addEventListener("mouseover", function () {
+                description.textContent = f.description;
+            });
+
+            // clear it when the mouse leaves
+            box.addEventListener("mouseout", function () {
+                description.textContent = "";
+            });
         }
     });
 });
